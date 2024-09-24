@@ -10,22 +10,25 @@ describe('WordleBoard', () => {
     wrapper = mount(WordleBoard, {props: {wordOfTheDay}})
   })
 
-  test("A victory message appears when the user makes a guess that matches the word of the day", async () => {
-    // Act  
+  async function playerSubmitsGuess(guess: string) {
     const guessINPUT = wrapper.find('input[type="text"]')
-    await guessINPUT.setValue('TESTS')
+    await guessINPUT.setValue(guess)
     await guessINPUT.trigger('keydown.enter')
     // const guessButton = wrapper.find('button')
     // await guessButton.trigger('click')
+  }
+
+  test("A victory message appears when the user makes a guess that matches the word of the day", async () => {
+    // Act  
+    await playerSubmitsGuess(wordOfTheDay)
 
     // Assert
     expect(wrapper.text()).toContain(VICTORY_MESSAGE)
   })
 
   test('a defeat message appears when the user makes a guess that is incorrect', async () => { 
-    const guessINPUT = wrapper.find('input[type="text"]')
-    await guessINPUT.setValue('WRONG')
-    await guessINPUT.trigger('keydown.enter')
+    // Act
+    await playerSubmitsGuess('WRONG')
 
     expect(wrapper.text()).toContain(DEFEAT_MESSAGE)
   })
@@ -33,5 +36,13 @@ describe('WordleBoard', () => {
   test('no end-of-game message appears if the user has not yet made a guess', async () => {
     expect(wrapper.text()).not.toContain(VICTORY_MESSAGE)
     expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
+  })
+
+  test('if a word does not have exactly 5 characters, a warning is emitted', async () => {
+    console.warn = vi.fn()
+
+    mount(WordleBoard, {props: {wordOfTheDay: 'FLY'}})
+
+    expect(console.warn).toHaveBeenCalled()
   })
 })

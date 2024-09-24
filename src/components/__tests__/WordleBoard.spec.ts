@@ -7,7 +7,7 @@ describe('WordleBoard', () => {
     // Arrange
     const wrapper = mount(WordleBoard, {props: {wordOfTheDay: 'TESTS'}})
 
-    // Act
+    // Act  
     const guessINPUT = wrapper.find('input[type="text"]')
     await guessINPUT.setValue('TESTS')
     await guessINPUT.trigger('keydown.enter')
@@ -17,4 +17,15 @@ describe('WordleBoard', () => {
     // Assert
     expect(wrapper.text()).toContain(VICTORY_MESSAGE)
   })
+
+  test('a defeat message appears when the user makes a guess that is incorrect', async () => { 
+    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: 'TESTS'}})
+
+    const guessINPUT = wrapper.find('input[type="text"]')
+    await guessINPUT.setValue('WRONG')
+    await guessINPUT.trigger('keydown.enter')
+
+    expect(wrapper.text()).toContain('Better luck next time!')
+  })
+  test.todo('no end-of-game message appears if the user has not yet made a guess')
 })

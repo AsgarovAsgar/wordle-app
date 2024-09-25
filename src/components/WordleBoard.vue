@@ -18,19 +18,24 @@ const guessSubmitted = ref('')
 // in order to make computed writable, we need to use a getter and setter
 const formattedGuessInProgress = computed({
   get: () => guessInProgress.value,
-  set: (rawValue: string) => guessInProgress.value = rawValue.slice(0, WORD_SIZE)
+  set: (rawValue: string) => guessInProgress.value = rawValue.slice(0, WORD_SIZE).toUpperCase()
 })
 
 function onSubmit() {
   if(!englishWords.includes(guessInProgress.value)) return
-  
+
   guessSubmitted.value = guessInProgress.value
 }
 </script>
 
 <template>
   <div>
-    <input type="text" v-model="formattedGuessInProgress" @keydown.enter="onSubmit">
+    <input 
+      type="text" 
+      :maxlength="WORD_SIZE"
+      v-model="formattedGuessInProgress" 
+      @keydown.enter="onSubmit"
+    />
     <p v-if="guessSubmitted.length">
       {{ guessSubmitted === wordOfTheDay ? VICTORY_MESSAGE : DEFEAT_MESSAGE }}
     </p>

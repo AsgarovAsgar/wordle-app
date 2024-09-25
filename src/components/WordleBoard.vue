@@ -18,8 +18,11 @@ const guessSubmitted = ref('')
 // in order to make computed writable, we need to use a getter and setter
 const formattedGuessInProgress = computed({
   get: () => guessInProgress.value,
-  set: (rawValue: string) => guessInProgress.value = rawValue.slice(0, WORD_SIZE).toUpperCase()
-})
+  set: (rawValue: string) => guessInProgress.value = rawValue
+    .slice(0, WORD_SIZE)
+    .toUpperCase()
+    .replace(/[^A-Z]+/gi, '')
+}
 
 function onSubmit() {
   if(!englishWords.includes(guessInProgress.value)) return

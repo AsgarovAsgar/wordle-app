@@ -49,7 +49,7 @@ describe('WordleBoard', () => {
       mount(WordleBoard, {props: { wordOfTheDay }})
   
       expect(console.warn).toHaveBeenCalled()
-    })
+    }) 
   
     test('no warning is emitted if the word of the day provided is a real uppercase English word with exactly 5 characters', async () => {
       mount(WordleBoard, {props: {wordOfTheDay: 'TESTS'}})
@@ -59,7 +59,10 @@ describe('WordleBoard', () => {
   })
 
   describe('Player input', () => {
-    test.todo('player guesses are limited to 5 letters')
+    test('player guesses are limited to 5 letters', async () => {
+      await playerSubmitsGuess(wordOfTheDay + 'EXTRA')
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE)
+    })
     test.todo('player guesses can only be submitted if they are real words')
     test.todo('player guesses are not case-sensitive')
     test.todo('player guesses can only contain letters')

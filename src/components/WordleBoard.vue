@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VICTORY_MESSAGE, DEFEAT_MESSAGE } from '@/settings'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import englishWords from '@/englishWordsWith5Letters.json'
 
 defineProps({
@@ -14,11 +14,17 @@ defineProps({
 
 const guessInProgress = ref('')
 const guessSubmitted = ref('')
+
+// in order to make computed writable, we need to use a getter and setter
+const formattedGuessInProgress = computed({
+  get: () => guessInProgress.value,
+  set: (rawValue: string) => guessInProgress.value = rawValue.slice(0, 5)
+})
 </script>
 
 <template>
   <div>
-    <input type="text" v-model="guessInProgress" @keydown.enter="guessSubmitted = guessInProgress">
+    <input type="text" v-model="formattedGuessInProgress" @keydown.enter="guessSubmitted = guessInProgress">
     <p v-if="guessSubmitted.length">
       {{ guessSubmitted === wordOfTheDay ? VICTORY_MESSAGE : DEFEAT_MESSAGE }}
     </p>

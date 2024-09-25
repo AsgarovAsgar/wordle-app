@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VICTORY_MESSAGE, DEFEAT_MESSAGE } from '@/settings'
+import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE } from '@/settings'
 import { ref, computed } from 'vue'
 import englishWords from '@/englishWordsWith5Letters.json'
 
@@ -18,7 +18,7 @@ const guessSubmitted = ref('')
 // in order to make computed writable, we need to use a getter and setter
 const formattedGuessInProgress = computed({
   get: () => guessInProgress.value,
-  set: (rawValue: string) => guessInProgress.value = rawValue.slice(0, 5)
+  set: (rawValue: string) => guessInProgress.value = rawValue.slice(0, WORD_SIZE)
 })
 </script>
 

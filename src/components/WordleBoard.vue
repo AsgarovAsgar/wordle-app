@@ -22,7 +22,7 @@ const formattedGuessInProgress = computed({
     .slice(0, WORD_SIZE)
     .toUpperCase()
     .replace(/[^A-Z]+/gi, '')
-}
+})
 
 function onSubmit() {
   if(!englishWords.includes(guessInProgress.value)) return

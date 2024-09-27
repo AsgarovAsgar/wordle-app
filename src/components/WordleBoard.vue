@@ -12,23 +12,28 @@ defineProps({
   }
 })
 
-const guessInProgress = ref('')
+const guessInProgress = ref<string | null>(null)
 const guessSubmitted = ref('')
 
 // in order to make computed writable, we need to use a getter and setter
-const formattedGuessInProgress = computed({
-  get: () => guessInProgress.value,
-  set: (rawValue: string) => guessInProgress.value = rawValue
-    .slice(0, WORD_SIZE)
-    .toUpperCase()
-    .replace(/[^A-Z]+/gi, '')
+const formattedGuessInProgress = computed<string>({
+  get: () => guessInProgress.value ?? '',
+  set: (rawValue: string) => {
+    guessInProgress.value = null
+
+    guessInProgress.value = rawValue
+      .slice(0, WORD_SIZE)
+      .toUpperCase()
+      .replace(/[^A-Z]+/gi, '')
+  }
 })
 
 function onSubmit() {
-  if(!englishWords.includes(guessInProgress.value)) return
+  if(!englishWords.includes(formattedGuessInProgress.value)) return
 
-  guessSubmitted.value = guessInProgress.value
+  guessSubmitted.value = formattedGuessInProgress.value
 }
+
 </script>
 
 <template>

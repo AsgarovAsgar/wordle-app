@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE } from '@/settings'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import englishWords from '@/englishWordsWith5Letters.json'
 
 defineProps({
@@ -38,6 +38,7 @@ function onSubmit() {
 
 <template>
   <div>
+    <pre v-show="false">{{ guessInProgress }}</pre>
     <input 
       type="text" 
       :maxlength="WORD_SIZE"

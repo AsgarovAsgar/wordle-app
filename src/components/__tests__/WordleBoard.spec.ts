@@ -23,6 +23,28 @@ describe('WordleBoard', () => {
       await playerSubmitsGuess(wordOfTheDay)
       expect(wrapper.text()).toContain(VICTORY_MESSAGE)
     })
+
+    // describe.each([
+    //   {numberOfGuesses: 0, shouldSeeDefeatMessage: false},
+    //   {numberOfGuesses: 1, shouldSeeDefeatMessage: false},
+    //   {numberOfGuesses: 2, shouldSeeDefeatMessage: false},
+    //   {numberOfGuesses: 3, shouldSeeDefeatMessage: false},
+    //   {numberOfGuesses: 4, shouldSeeDefeatMessage: false},
+    //   {numberOfGuesses: 5, shouldSeeDefeatMessage: false},
+    //   {numberOfGuesses: 6, shouldSeeDefeatMessage: true},
+    // ])('a defeat message should appear if the player makes incorrect guesses 6 times in a row', ({ numberOfGuesses, shouldSeeDefeatMessage }) => {
+    //   test(`therefore for ${numberOfGuesses} guess(es), a defeat nessage should ${shouldSeeDefeatMessage ? '' : 'not'} appear`, async () => {
+    //     for(let i = 0; i < numberOfGuesses; i++) {
+    //       await playerSubmitsGuess('WRONG')
+    //     }
+
+    //     if(shouldSeeDefeatMessage) {
+    //       expect(wrapper.text()).toContain(DEFEAT_MESSAGE)
+    //     } else {
+    //       expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
+    //     }
+    //   })
+    // })
   
     test('a defeat message appears when the user makes a guess that is incorrect', async () => { 
       await playerSubmitsGuess('WRONG')
@@ -59,6 +81,19 @@ describe('WordleBoard', () => {
   })
 
   describe('Player input', () => {
+    test("remains in focus the entire time", async () => {
+      document.body.innerHTML = `<div id="app"></div>`
+      wrapper = mount(WordleBoard, {
+        props: {wordOfTheDay},
+        attachTo: "#app"
+      })
+
+      expect(wrapper.find("input[type=text]").attributes("autofocus")).not.toBeUndefined()
+
+      await wrapper.find("input[type=text]").trigger("blur")
+      expect(document.activeElement).toBe(wrapper.find("input[type=text]").element)
+    })
+
     test(`player guesses are limited to ${WORD_SIZE} letters`, async () => {
       await playerSubmitsGuess(wordOfTheDay + 'EXTRA')
       expect(wrapper.text()).toContain(VICTORY_MESSAGE)

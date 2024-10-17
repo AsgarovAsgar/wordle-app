@@ -7,21 +7,24 @@ import GuessInput from '@/components/GuessInput.vue';
 defineProps({
   wordOfTheDay: {
     type: String,
+    required: true,
     validator: (wordGiven: string) => wordGiven.length === 5 
       && wordGiven.toUpperCase() === wordGiven
       && englishWords.includes(wordGiven)
   }
 })
 
-const guessSubmitted = ref('')
-
+const guessesSubmitted = ref<string[]>([])
 </script>
 
 <template>
   <main>
-    <GuessInput @guess-submitted="guess => guessSubmitted = guess" />
-    <p v-if="guessSubmitted.length" class="end-of-game-message">
-      {{ guessSubmitted === wordOfTheDay ? VICTORY_MESSAGE : DEFEAT_MESSAGE }}
+    <GuessInput @guess-submitted="guess => guessesSubmitted.push(guess)" />
+    <p 
+      v-if="guessesSubmitted.length === 6 || guessesSubmitted.includes(wordOfTheDay)" 
+      class="end-of-game-message"
+    >
+      {{ guessesSubmitted.includes(wordOfTheDay) ? VICTORY_MESSAGE : DEFEAT_MESSAGE }}
     </p>
   </main>
 </template>

@@ -126,17 +126,32 @@ describe('WordleBoard', () => {
       await playerSubmitsGuess('123')
       expect(wrapper.find<HTMLInputElement>('input[type="text"]').element.value).toEqual('')
     })
+
+    test('the player loses control after the max amount of guesses have been sent', async () => {
+      const guesses = ['WRONG', 'GUESS', 'HELLO', 'HAPPY', 'CODER']
+
+      for(const guess of guesses) {
+        await playerSubmitsGuess(guess)
+      }
+
+      expect(wrapper.find<HTMLInputElement>('input[type="text"]').attributes('disabled')).not.toBeUndefined()
+    })
+
+    test('the player loses control after the correct guess has been given', async () => {
+      await playerSubmitsGuess(wordOfTheDay)
+      expect(wrapper.find<HTMLInputElement>('input[type="text"]').attributes('disabled')).not.toBeUndefined()
+    })
   })
 
-  // describe('all previous guesses done by the player are visible in the page', async () => {
-  //   const guesses = ['WRONG', 'GUESS', 'HELLO', 'HAPPY', 'CODER']
+  test('all previous guesses done by the player are visible in the page', async () => {
+    const guesses = ['WRONG', 'GUESS', 'HELLO', 'HAPPY', 'CODER']
 
-  //   for(const guess of guesses) {
-  //     await playerSubmitsGuess(guess)
-  //   }
+    for(const guess of guesses) {
+      await playerSubmitsGuess(guess)
+    }
 
-  //   for(const guess of guesses) {
-  //     expect(wrapper.text()).toContain(guess)
-  //   }
-  // })
+    for(const guess of guesses) {
+      expect(wrapper.text()).toContain(guess)
+    }
+  })
 })

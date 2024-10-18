@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { WORD_SIZE } from '@/settings'
 
+
 defineProps<{
   guess: string
 }>()
@@ -19,6 +20,11 @@ defineProps<{
 </template>
 
 <style scoped>
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 .word {
   list-style: none;
   padding: 0;
@@ -36,6 +42,7 @@ defineProps<{
   font-size: 2rem;
   font-weight: bolder;
 }
+
 li:not([data-letter=" "]) {
   animation: pop 100ms;
 }

@@ -39,7 +39,6 @@ const countOfEmptyGuesses = computed(() => {
       <li>
         <GuessInput :disabled="isGameOver" @guess-submitted="guess => guessesSubmitted.push(guess)" />
       </li>
-      {{ countOfEmptyGuesses }}
       <li v-for="i in countOfEmptyGuesses" :key="`remaining-guess-${i}`">
         <GuessView guess="" />
       </li>

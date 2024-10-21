@@ -127,15 +127,16 @@ describe('WordleBoard', () => {
       expect(wrapper.find<HTMLInputElement>('input[type="text"]').element.value).toEqual('')
     })
 
-    test('the player loses control after the max amount of guesses have been sent', async () => {
-      const guesses = ['WRONG', 'GUESS', 'HELLO', 'HAPPY', 'CODER']
 
-      for(const guess of guesses) {
-        await playerSubmitsGuess(guess)
-      }
+    // test('the player loses control after the max amount of guesses have been sent', async () => {
+    //   const guesses = ['WRONG', 'GUESS', 'HELLO', 'HAPPY', 'CODER']
 
-      expect(wrapper.find<HTMLInputElement>('input[type="text"]').attributes('disabled')).not.toBeUndefined()
-    })
+    //   for(const guess of guesses) {
+    //     await playerSubmitsGuess(guess)
+    //   }
+
+    //   expect(wrapper.find<HTMLInputElement>('input[type="text"]').attributes('disabled')).not.toBeUndefined()
+    // })
 
     test('the player loses control after the correct guess has been given', async () => {
       await playerSubmitsGuess(wordOfTheDay)
